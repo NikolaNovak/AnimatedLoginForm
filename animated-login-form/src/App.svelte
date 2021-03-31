@@ -1,5 +1,19 @@
 <script>
+  let strength = 0;
+  let validations = []
 
+  const validatePassword = (e) => {
+    const password = e.target.value;
+
+    validations = [
+        (password.length > 5), 
+        (password.search(/[A-Z]/) > -1), 
+        (password.search(/[0-9]/) > -1), 
+        (password.search(/[$&+,:;=?@#]/) > -1) 
+    ]
+
+    strength = validations.reduce((acc, cur) => acc + cur, 0)
+  }
 </script>
 
 <style>
@@ -73,6 +87,38 @@
 	.input:not(:placeholder-shown) + .label {
 		transform: scale(0.8) translateY(-5rem);
 	}
+
+	.strength {
+    display: flex;
+    height: 20px;
+    width: 100%;
+  }
+
+	.bar {
+    margin-right: 5px;
+    height: 100%;
+    width: 25%;
+    transition: box-shadow 500ms;
+    box-shadow: inset 0px 20px #1f1f1f;
+  }
+
+	.bar-show {
+		box-shadow: none;
+	}
+
+ .bar-1 {
+    background: linear-gradient(to right, red, orangered);
+  }
+  .bar-2 {
+    background: linear-gradient(to right, orangered, yellow);
+  }
+  .bar-3 {
+    background: linear-gradient(to right, yellow, yellowgreen);
+  }
+  .bar-4 {
+    background: linear-gradient(to right, yellowgreen, green);
+  }
+
 </style>
 
 <main>
@@ -83,8 +129,23 @@
 		</div>
 
 		<div class="field">
-			<input type="password" name="password" class="input" placeholder=" " />
+			<input type="password" name="password" class="input" placeholder=" " on:input={validatePassword} />
 			<label for="password" class="label">Password</label>
 		</div>
+
+		<div class="strength">
+			<span class="bar bar-1" class:bar-show={strength>0} />
+			<span class="bar bar-2" class:bar-show={strength>1}/>
+			<span class="bar bar-3" class:bar-show={strength>2}/>
+			<span class="bar bar-4"class:bar-show={strength>3}/>
+		</div>
+
+    <ul>
+			<li> {validations[0] ? '✔️' : '❌'} must be at least 5 characters</li>
+			<li> {validations[1] ? '✔️' : '❌'} must contain a capital letter</li>
+			<li> {validations[2] ? '✔️' : '❌'} must contain a number</li>
+			<li> {validations[3] ? '✔️' : '❌'} must contain one of $&+,:;=?@#</li>
+	</ul>
+
 	</form>
 </main>
