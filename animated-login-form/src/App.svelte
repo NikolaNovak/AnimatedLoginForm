@@ -1,6 +1,7 @@
 <script>
   let strength = 0;
   let validations = []
+	let showPassword = false
 
   const validatePassword = (e) => {
     const password = e.target.value;
@@ -21,12 +22,14 @@
 		--text-color: #afafaf;
 		max-width: 500px;
 	}
-	.field {
-		width: 100%;
-		position: relative;
-		border-bottom: 2px dashed var(--text-color);
-		margin: 4rem auto 1rem;
-	}
+  .field {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    border-bottom: 2px dashed var(--text-color);
+    margin: 4rem auto 1rem;
+    transition: 500ms;
+  }
 
 	.label {
 		color: var(--text-color);
@@ -88,6 +91,14 @@
 		transform: scale(0.8) translateY(-5rem);
 	}
 
+  .toggle-password {
+    position: absolute;
+    cursor: pointer;
+    font-size: 0.9rem;
+    right: 0.3rem;
+    bottom: 0.5rem;
+  }
+	
 	.strength {
     display: flex;
     height: 20px;
@@ -119,6 +130,13 @@
     background: linear-gradient(to right, yellowgreen, green);
   }
 
+	ul {
+		list-style: none;
+		margin: 10px 0;
+		padding: 0;
+		text-align: left;
+  }
+
 </style>
 
 <main>
@@ -129,8 +147,13 @@
 		</div>
 
 		<div class="field">
-			<input type="password" name="password" class="input" placeholder=" " on:input={validatePassword} />
+			<input type={showPassword ? 'text' : 'password'} name="password" class="input" placeholder=" " on:input={validatePassword} />
 			<label for="password" class="label">Password</label>
+			<span
+				class="toggle-password"
+				on:click={() => (showPassword = !showPassword)}>
+				{showPassword ? '🙈' : '👁️'}
+			</span>
 		</div>
 
 		<div class="strength">
